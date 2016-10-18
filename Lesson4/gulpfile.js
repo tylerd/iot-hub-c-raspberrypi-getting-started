@@ -16,7 +16,7 @@ function initTasks(gulp) {
   /**
    * Setup common gulp tasks: init, install-tools, deploy, run
    */
-  require('gulp-common')(gulp, 'raspberrypi-node', {
+  require('gulp-common')(gulp, 'raspberrypi-c-on-device', {
     appName: 'lesson-4',
     configTemplate: {
       "device_host_name_or_ip_address": "[device hostname or IP adress]",

@@ -6,7 +6,7 @@
 /**
  * Setup common gulp tasks: init, install-tools, deploy, run
  */
-require('gulp-common')(require('gulp'), 'raspberrypi-c', {
+require('gulp-common')(require('gulp'), 'raspberrypi-c-on-device', {
   appName: 'lesson-1',
   configTemplate: {
     "device_host_name_or_ip_address": "[device hostname or IP adress]",

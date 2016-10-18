@@ -1,3 +1,5 @@
 {
-  "xxx": ""
+  "project_folder": "./c-pi-lesson-1",
+  "start_file": "app",
+  "ssh_port": 22
 }
