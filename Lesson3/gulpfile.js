@@ -27,7 +27,24 @@ function initTasks(gulp) {
       "azure_storage_connection_string": "[Azure storage connection string]",
       "iot_hub_consumer_group_name": "cg1"
     },
-    configPostfix: 'raspberrypi'
+    configPostfix: 'raspberrypi',
+    app: [ 'main.c', 'config.h' ],
+    inc: [ '~/azure-iot-sdks/c/azure-c-shared-utility/inc',
+           '~/azure-iot-sdks/c/iothub_client/inc' ],
+    lib: [ '~/azure-iot-sdks/c/cmake/iotsdk_linux/serializer/libserializer.a',
+           '~/azure-iot-sdks/c/cmake/iotsdk_linux/iothub_client/libiothub_client.a',
+           '~/azure-iot-sdks/c/cmake/iotsdk_linux/iothub_client/libiothub_client_amqp_transport.a',
+           'wiringPi',
+           '~/azure-iot-sdks/c/cmake/iotsdk_linux/azure-c-shared-utility/libaziotsharedutil.a',
+           '~/azure-iot-sdks/c/cmake/iotsdk_linux/azure-uamqp-c/libuamqp.a',
+           '~/azure-iot-sdks/c/cmake/iotsdk_linux/azure-c-shared-utility/libaziotsharedutil.a',
+           'ssl',
+           'crypto',
+           'curl',
+           'pthread',
+           'm',
+           'ssl',
+           'crypto' ]
   });
 
   var config = gulp.config;

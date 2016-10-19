@@ -13,5 +13,8 @@ require('gulp-common')(require('gulp'), 'raspberrypi-c-on-device', {
     "device_user_name": "pi",
     "device_password": "raspberry"
   },
-  configPostfix: "raspberrypi"
+  configPostfix: "raspberrypi",
+  app: [ 'main.c' ],
+  inc: [],
+  lib: [ 'wiringPi' ]
 });
