@@ -14,7 +14,5 @@ require('gulp-common')(require('gulp'), 'raspberrypi-c-on-device', {
     "device_password": "raspberry"
   },
   configPostfix: "raspberrypi",
-  app: [ 'main.c' ],
-  inc: [],
-  lib: [ 'wiringPi' ]
+  app: [ 'main.c', 'CMakeLists.txt' ]
 });
