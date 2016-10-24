@@ -40,31 +40,9 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
     messagePending = false;
 }
 
-static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle)
+IOTHUBMESSAGE_DISPOSITION_RESULT messageHandler(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
 {
-    char buffer[256];
-    sprintf(buffer, "{ deviceId: %s, messageId: %d }", "myraspberrypi", totalBlinkTimes);
-
-    IOTHUB_MESSAGE_HANDLE messageHandle = IoTHubMessage_CreateFromByteArray(buffer, strlen(buffer));
-    if (messageHandle == NULL)
-    {
-        printf("[Device] unable to create a new IoTHubMessage\r\n");
-    }
-    else
-    {
-        if (IoTHubClient_LL_SendEventAsync(iotHubClientHandle, messageHandle, sendCallback, NULL) != IOTHUB_CLIENT_OK)
-        {
-            printf("[Device] Failed to hand over the message to IoTHubClient\r\n");
-        }
-        else
-        {
-            lastMessageSentTime = millis();
-            messagePending = true;
-            printf("[Device] Sending message #%d: %s\r\n", totalBlinkTimes, buffer);
-        }
-
-        IoTHubMessage_Destroy(messageHandle);
-    }
+    printf("[Device] Message received\r\n");
 }
 
 int main(void)
@@ -87,14 +65,10 @@ int main(void)
         }
         else
         {
-            while ((totalBlinkTimes <= MAX_BLINK_TIMES) || messagePending)
-            {
-                if ((lastMessageSentTime + 2000 < millis()) && !messagePending)
-                {
-                    sendMessageAndBlink(iotHubClientHandle);
-                    totalBlinkTimes++;
-                }
+            IoTHubClient_LL_SetMessageCallback(iotHubClientHandle, messageHandler, NULL);
 
+            while (true)
+            {
                 IoTHubClient_LL_DoWork(iotHubClientHandle);            
                 delay(100);
             } 
