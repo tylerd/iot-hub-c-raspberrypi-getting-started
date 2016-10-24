@@ -13,58 +13,57 @@
 #include "iothub_client.h"
 #include "iothub_message.h"
 #include "iothubtransportamqp.h"
+#include "jsondecoder.h"
 
 #include "config.h"
 
-#define MAX_BLINK_TIMES 20
-
 const int RED_LED_PIN = 7;
-int totalBlinkTimes = 1;
-int lastMessageSentTime = 0;
-bool messagePending = false;
 
-static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userContextCallback)
+static void blinkLED()
 {
-    if (IOTHUB_CLIENT_CONFIRMATION_OK == result)
-    {
-        printf("[Device] Message sent to Azure IoT Hub\r\n");
-        digitalWrite(RED_LED_PIN, HIGH);
-        delay(100);
-        digitalWrite(RED_LED_PIN, LOW);
-    }
-    else
-    {
-        printf("[Device] Failed to send message to Azure IoT Hub\r\n");
-    }
-
-    messagePending = false;
+    digitalWrite(RED_LED_PIN, HIGH);
+    delay(100);
+    digitalWrite(RED_LED_PIN, LOW);
 }
 
-static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle)
+IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
 {
-    char buffer[256];
-    sprintf(buffer, "{ deviceId: %s, messageId: %d }", "myraspberrypi", totalBlinkTimes);
+    const unsigned char* buffer = NULL;
+    size_t size = 0;
 
-    IOTHUB_MESSAGE_HANDLE messageHandle = IoTHubMessage_CreateFromByteArray(buffer, strlen(buffer));
-    if (messageHandle == NULL)
-    {
-        printf("[Device] unable to create a new IoTHubMessage\r\n");
-    }
-    else
-    {
-        if (IoTHubClient_LL_SendEventAsync(iotHubClientHandle, messageHandle, sendCallback, NULL) != IOTHUB_CLIENT_OK)
-        {
-            printf("[Device] Failed to hand over the message to IoTHubClient\r\n");
-        }
-        else
-        {
-            lastMessageSentTime = millis();
-            messagePending = true;
-            printf("[Device] Sending message #%d: %s\r\n", totalBlinkTimes, buffer);
-        }
+    if (IOTHUB_MESSAGE_OK != IoTHubMessage_GetByteArray(message, &buffer, &size))
+        return IOTHUBMESSAGE_ABANDONED;
 
-        IoTHubMessage_Destroy(messageHandle);
+    // message needs to be converted to zero terminated string
+    char* s = malloc(size + 1);
+
+    if (NULL == s)
+        return IOTHUBMESSAGE_ABANDONED;
+
+    strncpy(s, buffer, size);
+    s[size] = 0;
+
+    printf("[Device] Received message: %s\r\n", s);
+
+    MULTITREE_HANDLE tree = NULL;
+
+    if (JSON_DECODER_OK == JSONDecoder_JSON_To_MultiTree(s, &tree))
+    {
+        const void* value = NULL;
+
+        if (MULTITREE_OK == MultiTree_GetLeafValue(tree, "/command", &value))
+        {
+            if (0 == strcmp((const char*)value, "\"blink\""))
+            {
+                blinkLED();
+            }
+        }
     }
+
+    free(s);
+    MultiTree_Destroy(tree);
+    
+    return IOTHUBMESSAGE_ACCEPTED;
 }
 
 int main(void)
@@ -87,14 +86,10 @@ int main(void)
         }
         else
         {
-            while ((totalBlinkTimes <= MAX_BLINK_TIMES) || messagePending)
-            {
-                if ((lastMessageSentTime + 2000 < millis()) && !messagePending)
-                {
-                    sendMessageAndBlink(iotHubClientHandle);
-                    totalBlinkTimes++;
-                }
+            IoTHubClient_LL_SetMessageCallback(iotHubClientHandle, receiveMessageCallback, NULL);
 
+            while (true)
+            {
                 IoTHubClient_LL_DoWork(iotHubClientHandle);            
                 delay(100);
             } 
