@@ -13,36 +13,57 @@
 #include "iothub_client.h"
 #include "iothub_message.h"
 #include "iothubtransportamqp.h"
+#include "jsondecoder.h"
 
 #include "config.h"
 
-#define MAX_BLINK_TIMES 20
-
 const int RED_LED_PIN = 7;
-int totalBlinkTimes = 1;
-int lastMessageSentTime = 0;
-bool messagePending = false;
 
-static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userContextCallback)
+static void blinkLED()
 {
-    if (IOTHUB_CLIENT_CONFIRMATION_OK == result)
-    {
-        printf("[Device] Message sent to Azure IoT Hub\r\n");
-        digitalWrite(RED_LED_PIN, HIGH);
-        delay(100);
-        digitalWrite(RED_LED_PIN, LOW);
-    }
-    else
-    {
-        printf("[Device] Failed to send message to Azure IoT Hub\r\n");
-    }
-
-    messagePending = false;
+    digitalWrite(RED_LED_PIN, HIGH);
+    delay(100);
+    digitalWrite(RED_LED_PIN, LOW);
 }
 
 IOTHUBMESSAGE_DISPOSITION_RESULT messageHandler(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
 {
-    printf("[Device] Message received\r\n");
+    const unsigned char* buffer = NULL;
+    size_t size = 0;
+
+    if (IOTHUB_MESSAGE_OK != IoTHubMessage_GetByteArray(message, &buffer, &size))
+        return IOTHUBMESSAGE_ABANDONED;
+
+    // message needs to be converted to zero terminated string
+    char* s = malloc(size + 1);
+
+    if (NULL == s)
+        return IOTHUBMESSAGE_ABANDONED;
+
+    strncpy(s, buffer, size);
+    s[size] = 0;
+
+    printf("[Device] Received message: %s\r\n", s);
+
+    MULTITREE_HANDLE tree = NULL;
+
+    if (JSON_DECODER_OK == JSONDecoder_JSON_To_MultiTree(s, &tree))
+    {
+        const void* value = NULL;
+
+        if (MULTITREE_OK == MultiTree_GetLeafValue(tree, "/command", &value))
+        {
+            if (0 == strcmp((const char*)value, "\"blink\""))
+            {
+                blinkLED();
+            }
+        }
+    }
+
+    free(s);
+    MultiTree_Destroy(tree);
+    
+    return IOTHUBMESSAGE_ACCEPTED;
 }
 
 int main(void)
