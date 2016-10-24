@@ -26,7 +26,7 @@ static void blinkLED()
     digitalWrite(RED_LED_PIN, LOW);
 }
 
-IOTHUBMESSAGE_DISPOSITION_RESULT messageHandler(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
+IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
 {
     const unsigned char* buffer = NULL;
     size_t size = 0;
@@ -86,7 +86,7 @@ int main(void)
         }
         else
         {
-            IoTHubClient_LL_SetMessageCallback(iotHubClientHandle, messageHandler, NULL);
+            IoTHubClient_LL_SetMessageCallback(iotHubClientHandle, receiveMessageCallback, NULL);
 
             while (true)
             {
