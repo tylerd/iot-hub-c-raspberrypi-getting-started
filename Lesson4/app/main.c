@@ -19,6 +19,8 @@
 
 const int RED_LED_PIN = 7;
 
+bool lastMessageReceived = false;
+
 static void blinkLED()
 {
     digitalWrite(RED_LED_PIN, HIGH);
@@ -57,6 +59,10 @@ IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE me
             {
                 blinkLED();
             }
+            else if (0 == strcmp((const char*)value, "\"stop\""))
+            {
+                lastMessageReceived = true;
+            }
         }
     }
 
@@ -88,7 +94,7 @@ int main(void)
         {
             IoTHubClient_LL_SetMessageCallback(iotHubClientHandle, receiveMessageCallback, NULL);
 
-            while (true)
+            while (!lastMessageReceived)
             {
                 IoTHubClient_LL_DoWork(iotHubClientHandle);            
                 delay(100);

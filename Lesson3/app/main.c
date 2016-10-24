@@ -27,7 +27,6 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
 {
     if (IOTHUB_CLIENT_CONFIRMATION_OK == result)
     {
-        printf("[Device] Message sent to Azure IoT Hub\r\n");
         digitalWrite(RED_LED_PIN, HIGH);
         delay(100);
         digitalWrite(RED_LED_PIN, LOW);
