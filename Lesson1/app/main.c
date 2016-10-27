@@ -11,15 +11,16 @@
 
 int main(int argc, char *argv[])
 {
-    bool isLedOn = false;
+    int blinkNumber = 0;
     
     wiringPiSetup();
 
-    for (;;)
+    while (20 > blinkNumber++)
     {
-        printf("[Device] Switching %s the LED...\n", isLedOn ? "on" : "off");
-        digitalWrite(RED_LED_PIN, isLedOn ? HIGH : LOW);
-        isLedOn = !isLedOn;
+        printf("[Device] #%d Blink LED \n", blinkNumber);
+        digitalWrite(RED_LED_PIN, HIGH);
+        delay(100);
+        digitalWrite(RED_LED_PIN, LOW);
         delay(2000);
     }
 }
