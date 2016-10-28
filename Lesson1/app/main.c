@@ -7,19 +7,21 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
+#define MAX_BLINK_TIMES 20
 #define RED_LED_PIN 7
 
 int main(int argc, char *argv[])
 {
-    bool isLedOn = false;
+    int blinkNumber = 0;
     
     wiringPiSetup();
 
-    for (;;)
+    while (MAX_BLINK_TIMES > blinkNumber++)
     {
-        printf("[Device] Switching %s the LED...\n", isLedOn ? "on" : "off");
-        digitalWrite(RED_LED_PIN, isLedOn ? HIGH : LOW);
-        isLedOn = !isLedOn;
+        printf("[Device] #%d Blink LED \n", blinkNumber);
+        digitalWrite(RED_LED_PIN, HIGH);
+        delay(100);
+        digitalWrite(RED_LED_PIN, LOW);
         delay(2000);
     }
 }
