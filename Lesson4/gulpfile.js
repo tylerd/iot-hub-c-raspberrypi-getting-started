@@ -26,7 +26,7 @@ function initTasks(gulp) {
       "iot_device_connection_string": "[IoT device connection string]"
     },
     configPostfix: 'raspberrypi',
-    app: [ 'main.c', 'config.h', 'CMakeLists.txt' ]
+    app: [ 'main.c', 'CMakeLists.txt' ]
   });
 
   var config = gulp.config;

@@ -14,8 +14,6 @@
 #include "iothub_message.h"
 #include "iothubtransportamqp.h"
 
-#include "config.h"
-
 #define MAX_BLINK_TIMES 20
 
 const int RED_LED_PIN = 7;
@@ -66,8 +64,14 @@ static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle)
     }
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
+    if (argc < 2)
+    {
+        printf("[Device] IoT Hub connection string should be passed as a parameter\r\n");
+        return 1;
+    }
+
     wiringPiSetup();
 
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
@@ -80,7 +84,7 @@ int main(void)
     }
     else
     {
-        if ((iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(connectionString, AMQP_Protocol)) == NULL)
+        if ((iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(argv[1], AMQP_Protocol)) == NULL)
         {
             (void)printf("[Device] ERROR: iotHubClientHandle is NULL!\r\n");
         }

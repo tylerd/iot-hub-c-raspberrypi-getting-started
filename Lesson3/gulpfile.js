@@ -28,7 +28,7 @@ function initTasks(gulp) {
       "iot_hub_consumer_group_name": "cg1"
     },
     configPostfix: 'raspberrypi',
-    app: [ 'main.c', 'config.h', 'CMakeLists.txt' ]
+    app: [ 'main.c', 'CMakeLists.txt' ]
   });
 
   var config = gulp.config;
