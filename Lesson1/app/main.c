@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
     int blinkNumber = 0;
     
     wiringPiSetup();
+    pinMode(RED_LED_PIN, OUTPUT);
 
     while (MAX_BLINK_TIMES > blinkNumber++)
     {

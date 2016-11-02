@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
     }
 
     wiringPiSetup();
+    pinMode(RED_LED_PIN, OUTPUT);
 
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
 
