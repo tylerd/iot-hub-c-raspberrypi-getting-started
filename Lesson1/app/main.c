@@ -24,4 +24,6 @@ int main(int argc, char *argv[])
         digitalWrite(RED_LED_PIN, LOW);
         delay(2000);
     }
+
+    return 0;
 }
