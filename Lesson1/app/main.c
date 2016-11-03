@@ -10,7 +10,7 @@
 #define MAX_BLINK_TIMES 20
 #define RED_LED_PIN 7
 
-// TRIGGERING TEST COMMIT -XXYAA
+// TRIGGERING TEST COMMIT -XXYAABB
 int main(int argc, char *argv[])
 {
     int blinkNumber = 0;
