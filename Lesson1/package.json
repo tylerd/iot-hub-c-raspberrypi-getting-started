@@ -6,6 +6,6 @@
   "license": "MIT",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-common": "Azure/gulp-common.git#v0.9.35"
+    "gulp-common": "Azure/gulp-common.git#zims-removed-check-raspbian"
   }
 }
