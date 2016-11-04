@@ -47,7 +47,7 @@
     "iotHubKeyResource": "[resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHubName'), variables('iotHubKeyName'))]",
     "functionAppName": "[concat(parameters('resoucePrefix'), 'functionApp')]",
     "receiveDeviceMessagesFunction": "ReceiveDeviceMessages",
-    "repoUrl": "https://github.com/Azure-Samples/iot-hub-c-getting-started",
+    "repoUrl": "https://github.com/Azure-Samples/iot-hub-c-raspberrypi-getting-started",
     "branch": "master"
   },
   "resources": [
