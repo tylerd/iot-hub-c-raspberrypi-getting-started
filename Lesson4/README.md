@@ -29,6 +29,7 @@ gulp init
 
 Install required tools/packages on the Raspberry Pi 3 device, deploy sample application, and run it on the device:
 ```bash
+gulp install-tools
 gulp deploy
 gulp run
 ```
