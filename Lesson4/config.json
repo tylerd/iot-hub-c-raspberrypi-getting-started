@@ -1,5 +1,5 @@
 {
-  "project_folder": "./node-pi-lesson-4",
+  "project_folder": "./c-pi-lesson-4",
   "start_file": "app",
   "ssh_port": 22
 }
