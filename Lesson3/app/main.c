@@ -21,6 +21,8 @@ int totalBlinkTimes = 1;
 int lastMessageSentTime = 0;
 bool messagePending = false;
 
+// XXX - abc
+
 static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userContextCallback)
 {
     if (IOTHUB_CLIENT_CONFIRMATION_OK == result)
