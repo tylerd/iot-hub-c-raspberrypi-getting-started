@@ -1,6 +1,6 @@
 ---
 services: iot-hub, iot-suite
-platforms: c
+platforms: C
 author: zikalino
 ---
 
