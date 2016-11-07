@@ -16,7 +16,7 @@
 
 #define MAX_BLINK_TIMES 20
 
-const int RED_LED_PIN = 7;
+const int LED_PIN = 7;
 int totalBlinkTimes = 1;
 int lastMessageSentTime = 0;
 bool messagePending = false;
@@ -25,9 +25,9 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
 {
     if (IOTHUB_CLIENT_CONFIRMATION_OK == result)
     {
-        digitalWrite(RED_LED_PIN, HIGH);
+        digitalWrite(LED_PIN, HIGH);
         delay(100);
-        digitalWrite(RED_LED_PIN, LOW);
+        digitalWrite(LED_PIN, LOW);
     }
     else
     {
@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
     }
 
     wiringPiSetup();
-    pinMode(RED_LED_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
 
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
 
