@@ -15,15 +15,15 @@
 #include "iothubtransportmqtt.h"
 #include "jsondecoder.h"
 
-const int RED_LED_PIN = 7;
+const int LED_PIN = 7;
 
 bool lastMessageReceived = false;
 
 static void blinkLED()
 {
-    digitalWrite(RED_LED_PIN, HIGH);
+    digitalWrite(LED_PIN, HIGH);
     delay(100);
-    digitalWrite(RED_LED_PIN, LOW);
+    digitalWrite(LED_PIN, LOW);
 }
 
 IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     }
 
     wiringPiSetup();
-    pinMode(RED_LED_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
 
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
 
