@@ -4,7 +4,7 @@ platforms: C
 author: zikalino
 ---
 
-# Configure a Rapberry Pi 3 device and run a sample app on it
+# Configure a Raspberry Pi 3 device and run a sample app on it
 This sample accompanies [Get started with your Raspberry Pi 3](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-c-lesson1-configure-your-device/) lesson. It shows how to setup a Raspberry Pi 3 device, install an OS, and deploy and run a sample application.
 device, install an OS, and deploy and run a sample application.
 
@@ -13,7 +13,7 @@ device, install an OS, and deploy and run a sample application.
 - `config.json` contains required configuration settings.
 
 ## Running this sample
-Please follow the [Lesson 1: Configure your device](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-c-lesson1-configure-your-device/) for detailed walkthough of the steps below.
+Please follow the [Lesson 1: Configure your device](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-c-lesson1-configure-your-device/) for detailed walkthrough of the steps below.
 
 ### Install required tools
 

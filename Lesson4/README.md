@@ -14,7 +14,7 @@ See [Lesson 4: Send cloud-to-device messages](https://azure.microsoft.com/en-us/
 - `app` sub-folder contains the sample C application that receives cloud-2-device messages.
 
 ## Running this sample
-Please follow the [Lesson 4: Send cloud-to-device messages](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-c-lesson4-send-cloud-to-device-messages/) for detailed walkthough of the steps below.
+Please follow the [Lesson 4: Send cloud-to-device messages](https://azure.microsoft.com/en-us/documentation/articles/iot-hub-raspberry-pi-kit-c-lesson4-send-cloud-to-device-messages/) for detailed walkthrough of the steps below.
 
 ### Deploy and run
 
