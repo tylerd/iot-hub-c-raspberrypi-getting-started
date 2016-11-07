@@ -18,13 +18,13 @@ include_directories(~/azure-iot-sdks/c/c-utility/inc
 link_directories(~/azure-iot-sdks/c/cmake/iotsdk_linux/serializer
                  ~/azure-iot-sdks/c/cmake/iotsdk_linux/iothub_client
                  ~/azure-iot-sdks/c/cmake/iotsdk_linux/c-utility
-                 ~/azure-iot-sdks/c/cmake/iotsdk_linux/uamqp)
+                 ~/azure-iot-sdks/c/cmake/iotsdk_linux/umqtt)
 
 add_executable(app main.c)
 target_link_libraries(app wiringPi
                           serializer
                           iothub_client
-                          iothub_client_amqp_transport
+                          iothub_client_mqtt_transport
                           uamqp
                           aziotsharedutil
                           ssl
