@@ -14,8 +14,7 @@
 #include "iothub_message.h"
 #include "iothubtransportmqtt.h"
 
-#define MAX_BLINK_TIMES 20
-
+const int MAX_BLINK_TIMES = 20;
 const int LED_PIN = 7;
 int totalBlinkTimes = 1;
 int lastMessageSentTime = 0;
