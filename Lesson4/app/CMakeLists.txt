@@ -7,7 +7,8 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
 endif()
 
 include_directories(~/azure-iot-sdks/c/c-utility/inc
-                    ~/azure-iot-sdks/c/iothub_client/inc)
+                    ~/azure-iot-sdks/c/iothub_client/inc
+                     ~/azure-iot-sdks/c/serializer/inc)
 
 link_directories(~/azure-iot-sdks/c/cmake/iotsdk_linux/serializer
                  ~/azure-iot-sdks/c/cmake/iotsdk_linux/iothub_client
