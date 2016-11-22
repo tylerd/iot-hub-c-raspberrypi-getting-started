@@ -7,8 +7,8 @@
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
-#define MAX_BLINK_TIMES 20
-#define RED_LED_PIN 7
+const int MAX_BLINK_TIMES = 20;
+const int RED_LED_PIN = 7;
 
 int main(int argc, char *argv[])
 {

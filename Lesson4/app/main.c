@@ -12,18 +12,18 @@
 #include "azure_c_shared_utility/crt_abstractions.h"
 #include "iothub_client.h"
 #include "iothub_message.h"
-#include "iothubtransportamqp.h"
+#include "iothubtransportmqtt.h"
 #include "jsondecoder.h"
 
-const int RED_LED_PIN = 7;
+const int LED_PIN = 7;
 
 bool lastMessageReceived = false;
 
 static void blinkLED()
 {
-    digitalWrite(RED_LED_PIN, HIGH);
+    digitalWrite(LED_PIN, HIGH);
     delay(100);
-    digitalWrite(RED_LED_PIN, LOW);
+    digitalWrite(LED_PIN, LOW);
 }
 
 IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE message, void* userContextCallback)
@@ -79,11 +79,11 @@ int main(int argc, char* argv[])
     }
 
     wiringPiSetup();
-    pinMode(RED_LED_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
 
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
 
-    (void)printf("[Device] Starting the IoTHub client sample AMQP...\r\n");
+    (void)printf("[Device] Starting the IoTHub client sample MQTT...\r\n");
 
     if (platform_init() != 0)
     {
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
     }
     else
     {
-        if ((iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(argv[1], AMQP_Protocol)) == NULL)
+        if ((iotHubClientHandle = IoTHubClient_LL_CreateFromConnectionString(argv[1], MQTT_Protocol)) == NULL)
         {
             (void)printf("[Device] ERROR: iotHubClientHandle is NULL!\r\n");
         }
