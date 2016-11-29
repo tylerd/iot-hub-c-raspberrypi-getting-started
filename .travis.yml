@@ -5,7 +5,7 @@ install:
   - sudo pip install cpplint
 
 script: 
-  - cpplint ./Lesson1/app/main.c
+  - cpplint --filter=-[whitespace/braces]
 
 after_success:
   - echo "Success"
