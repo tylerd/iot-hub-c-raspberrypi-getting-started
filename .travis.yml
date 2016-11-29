@@ -5,7 +5,7 @@ install:
   - sudo pip install cpplint
 
 script: 
-  - cpplint ./Lesson1/main.c
+  - cpplint ./Lesson1/app/main.c
 
 after_success:
   - echo "Success"
