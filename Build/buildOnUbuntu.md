@@ -6,7 +6,7 @@ To build Azure IoT Raspberry Pi Starter Kit C On Ubuntu, you'll need build azure
 ## Build steps
 1. Cross compile azure iot sdks on C. Below steps are copied from [Cross Compiling the Azure IoT Hub SDK](https://github.com/Azure/azure-iot-sdks/blob/master/c/doc/SDK_cross_compile_example.md), pls refer to original source for more detail.
 a. Get required Raspberry Pi toolchain, system libraries and system headers from https://github.com/raspberrypi/tools. For example:
- ```
+ ```bash
 cd ~
 mkdir RPiTools
 cd RPiTools
@@ -14,7 +14,7 @@ git clone https://github.com/raspberrypi/tools.git
 ```
 
 b. Copy some files from a running Raspberry Pi to your host machine.
-```
+```bash
 cd ~/RPiTools/tools/arm-bcm2708/\
 gcc-linaro-arm-linux-gnueabihf-raspbian-x64/arm-linux-gnueabihf
 rsync -rl --safe-links pi@<your Pi identifier>:/{lib,usr} .
@@ -22,11 +22,11 @@ rsync -rl --safe-links pi@<your Pi identifier>:/{lib,usr} .
 In the above command replace &lt;*your Pi identifier*&gt; with the IP address of your Raspberry Pi.
 
 c. Setup cmake to cross compile. In same directory as above enter the following command
-```
+```bash
 export RPI_ROOT=$(pwd)
 ```
 Then create toolchain-rpi.cmake file, Enter following commands
-```
+```bash
 cd ~/Source/azure-iot-sdks/c/build_all/linux
 ```
 ```cmake
@@ -52,7 +52,7 @@ and save the toolchain file. Your cross compilation environment is now complete.
 
 d. Build aure iot sdks
 Build with following commands
-```
+```bash
 cd ~/Source/azure-iot-sdks/c/build_all/linux
 ./build.sh --toolchain-file toolchain-rpi.cmake --skip-unittests -cl --sysroot=$RPI_ROOT
 ```
@@ -63,7 +63,7 @@ This will tell cmake to build the SDK using the toolchain file toolchain-rpi.cma
 2. Cross compile raspberry pi starter kit on C. After build azure iot sdks on C, run below commands to build raspberry pi started kit on C.
 ```
 cd ~/Source/iot-hub-c/raspberrypi-getting-started/Build
-./build.sh --toolchain-file ./toolchain-rpi.cmake -cl --sysroot=$RPI_ROOT --azureiotsdks=<your azure iot sdks root path built at step 1>
+./build.sh --toolchain-file ./toolchain-rpi.cmake -cl --sysroot=$RPI_ROOT --azure-iot-sdks=<your azure iot sdks root path built at step 1>
 ```
 
 ## References
