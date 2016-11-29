@@ -62,7 +62,7 @@ This will tell cmake to build the SDK using the toolchain file toolchain-rpi.cma
 
 2. Cross compile raspberry pi starter kit on C. After build azure iot sdks on C, run below commands to build raspberry pi started kit on C.
 ```
-cd ~/Source/iot-hub-c/raspberrypi-getting-started/Build
+cd ~/Source/iot-hub-c/raspberrypi-getting-started/.misc
 ./build.sh --toolchain-file ./toolchain-rpi.cmake -cl --sysroot=$RPI_ROOT --azure-iot-sdks=<your azure iot sdks root path built at step 1>
 ```
 
