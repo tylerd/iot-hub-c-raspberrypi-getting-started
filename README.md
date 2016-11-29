@@ -1,4 +1,4 @@
----
+    ---
 services: iot-hub
 platforms: c
 author: shizn
@@ -18,3 +18,6 @@ We hope you enjoy the process. Please provide feedback if there's anything that 
 ***
 **Don't have a kit yet?:** Click [here](http://azure.com/iotstarterkits)
 ***
+
+## How to build Azure IoT Raspberry Pi Started Kit on ubuntu
+Refer to [this document](Build/buildOnUbuntu.md) for more detail to build Azure IoT Raspberry Pi Started Kit on ubuntu. 

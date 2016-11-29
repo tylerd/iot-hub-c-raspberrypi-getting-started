@@ -6,16 +6,16 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set (CMAKE_CXX_FLAGS "--std=c++11 -g ${CMAKE_CXX_FLAGS}")
 endif()
 
-include_directories(~/azure-iot-sdks/c/c-utility/inc
-                    ~/azure-iot-sdks/c/iothub_client/inc)
+include_directories(${azureiotsdks}/c/c-utility/inc
+                    ${azureiotsdks}/c/iothub_client/inc)
 
-link_directories(~/azure-iot-sdks/c/cmake/iotsdk_linux/serializer
-                 ~/azure-iot-sdks/c/cmake/iotsdk_linux/iothub_client
-                 ~/azure-iot-sdks/c/cmake/iotsdk_linux/c-utility
-                 ~/azure-iot-sdks/c/cmake/iotsdk_linux/umqtt)
+link_directories(${azureiotsdks}/c/cmake/iotsdk_linux/serializer
+                 ${azureiotsdks}/c/cmake/iotsdk_linux/iothub_client
+                 ${azureiotsdks}/c/cmake/iotsdk_linux/c-utility
+                 ${azureiotsdks}/c/cmake/iotsdk_linux/umqtt)
 
-add_executable(app main.c)
-target_link_libraries(app wiringPi
+add_executable(Lesson3 main.c)
+target_link_libraries(Lesson3 wiringPi
                           serializer
                           iothub_client
                           iothub_client_mqtt_transport
@@ -28,4 +28,3 @@ target_link_libraries(app wiringPi
                           m
                           ssl
                           crypto)
-

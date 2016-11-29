@@ -6,5 +6,5 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set (CMAKE_CXX_FLAGS "--std=c++11 -g ${CMAKE_CXX_FLAGS}")
 endif()
 
-add_executable(app main.c)
-target_link_libraries(app wiringPi)
+add_executable(Lesson1 main.c)
+target_link_libraries(Lesson1 wiringPi)
