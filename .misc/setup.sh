@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#This script updates a fresh Ubuntu installation with all the dependent
+# This script updates a fresh Ubuntu installation with all the dependent
 # components necessary to use the IoT Client SDK for C.
 
 scriptdir=$(cd "$(dirname "$0")" && pwd)
