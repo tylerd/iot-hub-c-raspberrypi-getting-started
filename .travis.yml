@@ -4,11 +4,13 @@ compiler: gcc
 install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test --yes
   - sudo apt-get update -qq 
-  - sudo apt-get install -qq libstdc++6-4.7-dev  
-  - sudo ./install_oclint.sh
+  - sudo apt-get install -qq libstdc++6-4.7-dev
+  - sudo chmod 777 ./install_oclint.sh  
+  - sudo chmod 777 ./do_oclint.sh  
+  - ./install_oclint.sh
 
 script: 
-  - sudo ./do_oclint.sh
+  - ./do_oclint.sh
 
 after_success:
   - echo "Success"
