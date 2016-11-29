@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cpp_files=`ls *.cpp`
+cpp_files='Lesson1/app/main.c'
 
 # Clean main should work
 ./oclint-0.10.3/bin/oclint -o oclint.log \
