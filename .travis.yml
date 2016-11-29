@@ -2,7 +2,7 @@ language: cpp
 compiler: gcc
 
 install:
-  - pip install cpplint
+  - sudo pip install cpplint
 
 script: 
   - cpplint ./Lesson1/main.c
