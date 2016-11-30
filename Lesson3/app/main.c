@@ -152,7 +152,6 @@ static bool setX509Certificate(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char 
     free(x509privatekey);
 
     return true;
-
 }
 
 int main(int argc, char* argv[])
