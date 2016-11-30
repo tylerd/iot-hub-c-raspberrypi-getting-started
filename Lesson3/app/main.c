@@ -39,7 +39,7 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
 static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle)
 {
     char buffer[256];
-    sprintf(buffer, "{ deviceId: %s, messageId: %d }", "myraspberrypi", totalBlinkTimes);
+    snprintf(buffer, sizeof(buffer), "{ deviceId: %s, messageId: %d }", "myraspberrypi", totalBlinkTimes);
 
     IOTHUB_MESSAGE_HANDLE messageHandle = IoTHubMessage_CreateFromByteArray(buffer, strlen(buffer));
     if (messageHandle == NULL)
@@ -98,9 +98,9 @@ int main(int argc, char* argv[])
                     totalBlinkTimes++;
                 }
 
-                IoTHubClient_LL_DoWork(iotHubClientHandle);            
+                IoTHubClient_LL_DoWork(iotHubClientHandle);
                 delay(100);
-            } 
+            }
 
             IoTHubClient_LL_Destroy(iotHubClientHandle);
         }

@@ -66,7 +66,7 @@ IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE me
 
     free(s);
     MultiTree_Destroy(tree);
-    
+
     return IOTHUBMESSAGE_ACCEPTED;
 }
 
@@ -101,9 +101,9 @@ int main(int argc, char* argv[])
 
             while (!lastMessageReceived)
             {
-                IoTHubClient_LL_DoWork(iotHubClientHandle);            
+                IoTHubClient_LL_DoWork(iotHubClientHandle);
                 delay(100);
-            } 
+            }
 
             IoTHubClient_LL_Destroy(iotHubClientHandle);
         }
