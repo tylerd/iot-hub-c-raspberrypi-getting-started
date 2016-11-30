@@ -66,7 +66,7 @@ IOTHUBMESSAGE_DISPOSITION_RESULT receiveMessageCallback(IOTHUB_MESSAGE_HANDLE me
 
     free(s);
     MultiTree_Destroy(tree);
-    
+
     return IOTHUBMESSAGE_ACCEPTED;
 }
 
@@ -92,7 +92,7 @@ char *get_device_id(char *str)
 static char *readFile(char *fileName)
 {
     FILE *fp;
-    long lSize;
+    int size;
     char *buffer;
 
     fp = fopen(fileName, "rb");
@@ -104,11 +104,11 @@ static char *readFile(char *fileName)
     }
 
     fseek(fp, 0L, SEEK_END);
-    lSize = ftell(fp);
+    size = ftell(fp);
     rewind(fp);
 
     // Allocate memory for entire content
-    buffer = calloc(1, lSize + 1);
+    buffer = calloc(1, size + 1);
 
     if (buffer == NULL)
     {
@@ -118,7 +118,7 @@ static char *readFile(char *fileName)
     }
 
     // Read the file into the buffer
-    if (1 != fread(buffer, lSize, 1, fp))
+    if (1 != fread(buffer, size, 1, fp))
     {
         fclose(fp);
         free(buffer);
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
 
     char device_id[257];
     char *device_id_src = get_device_id(argv[1]);
- 
+
     if (device_id_src == NULL)
     {
         printf("[Device] ERROR: Cannot parse device id from IoT device connection string\n");
@@ -198,7 +198,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            if (strstr(argv[1], "x509=true") != NULL) 
+            if (strstr(argv[1], "x509=true") != NULL)
             {
                 // Use X.509 certificate authentication.
                 if (!setX509Certificate(iotHubClientHandle, device_id))
@@ -213,7 +213,7 @@ int main(int argc, char* argv[])
             {
                 IoTHubClient_LL_DoWork(iotHubClientHandle);
                 delay(100);
-            } 
+            }
 
             IoTHubClient_LL_Destroy(iotHubClientHandle);
         }

@@ -193,7 +193,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            if (strstr(argv[1], "x509=true") != NULL) 
+            if (strstr(argv[1], "x509=true") != NULL)
             {
                 // Use X.509 certificate authentication.
                 if (!setX509Certificate(iotHubClientHandle, device_id))
