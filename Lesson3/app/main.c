@@ -41,7 +41,7 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
 static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle)
 {
     char buffer[256];
-    sprintf(buffer, "{ deviceId: %s, messageId: %d }", "myraspberrypi", totalBlinkTimes);
+    snprintf(buffer, sizeof(buffer), "{ deviceId: %s, messageId: %d }", "myraspberrypi", totalBlinkTimes);
 
     IOTHUB_MESSAGE_HANDLE messageHandle = IoTHubMessage_CreateFromByteArray(buffer, strlen(buffer));
     if (messageHandle == NULL)
@@ -87,7 +87,7 @@ char *get_device_id(char *str)
 static char *readFile(char *fileName)
 {
     FILE *fp;
-    long lSize;
+    int size;
     char *buffer;
 
     fp = fopen(fileName, "rb");
@@ -99,11 +99,11 @@ static char *readFile(char *fileName)
     }
 
     fseek(fp, 0L, SEEK_END);
-    lSize = ftell(fp);
+    size = ftell(fp);
     rewind(fp);
 
     // Allocate memory for entire content
-    buffer = calloc(1, lSize + 1);
+    buffer = calloc(1, size + 1);
 
     if (buffer == NULL)
     {
@@ -113,7 +113,7 @@ static char *readFile(char *fileName)
     }
 
     // Read the file into the buffer
-    if (1 != fread(buffer, lSize, 1, fp))
+    if (1 != fread(buffer, size, 1, fp))
     {
         fclose(fp);
         free(buffer);
@@ -162,19 +162,19 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    char device_id[257];  
-    char *device_id_src = get_device_id(argv[1]); 
+    char device_id[257];
+    char *device_id_src = get_device_id(argv[1]);
  
     if (device_id_src == NULL)  
     {  
-        printf("[Device] ERROR: Cannot parse device id from IoT device connection string\n");  
-        return 1;  
+        printf("[Device] ERROR: Cannot parse device id from IoT device connection string\n");
+        return 1;
     } 
- 
-    strcpy(device_id, device_id_src);  
-    free(device_id_src); 
 
-    wiringPiSetup();  
+    snprintf(device_id, sizeof(device_id), "%s", device_id_src);
+    free(device_id_src);
+
+    wiringPiSetup();
     pinMode(LED_PIN, OUTPUT);
 
     IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle;
@@ -198,7 +198,7 @@ int main(int argc, char* argv[])
                 // Use X.509 certificate authentication.
                 if (!setX509Certificate(iotHubClientHandle, device_id))
                 {
-                        return 1; 
+                        return 1;
                 }
             }
 
@@ -210,7 +210,7 @@ int main(int argc, char* argv[])
                     totalBlinkTimes++;
                 }
 
-                IoTHubClient_LL_DoWork(iotHubClientHandle);            
+                IoTHubClient_LL_DoWork(iotHubClientHandle);
                 delay(100);
             } 
 

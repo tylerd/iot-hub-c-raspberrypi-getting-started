@@ -167,6 +167,18 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    char device_id[257];
+    char *device_id_src = get_device_id(argv[1]);
+ 
+    if (device_id_src == NULL)  
+    {  
+        printf("[Device] ERROR: Cannot parse device id from IoT device connection string\n");
+        return 1;
+    } 
+
+    snprintf(device_id, sizeof(device_id), "%s", device_id_src);
+    free(device_id_src);
+
     wiringPiSetup();
     pinMode(LED_PIN, OUTPUT);
 
@@ -191,7 +203,7 @@ int main(int argc, char* argv[])
                 // Use X.509 certificate authentication.
                 if (!setX509Certificate(iotHubClientHandle, device_id))
                 {
-                        return 1; 
+                    return 1;
                 }
             }
 
@@ -199,7 +211,7 @@ int main(int argc, char* argv[])
 
             while (!lastMessageReceived)
             {
-                IoTHubClient_LL_DoWork(iotHubClientHandle);            
+                IoTHubClient_LL_DoWork(iotHubClientHandle);
                 delay(100);
             } 
 
