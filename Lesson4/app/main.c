@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
@@ -11,6 +12,7 @@
 #include "azure_c_shared_utility/threadapi.h"
 #include "azure_c_shared_utility/crt_abstractions.h"
 #include "iothub_client.h"
+#include "iothub_client_options.h"
 #include "iothub_message.h"
 #include "iothubtransportmqtt.h"
 #include "jsondecoder.h"
