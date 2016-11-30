@@ -138,8 +138,8 @@ static bool setX509Certificate(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char 
     char cwd[1024];
 
     getcwd(cwd, sizeof(cwd));
-    sprintf(certName, "%s/%s-cert.pem", cwd, deviceId);
-    sprintf(keyName, "%s/%s-key.pem", cwd, deviceId);
+    snprintf(certName, sizeof(certName), "%s/%s-cert.pem", cwd, deviceId);
+    snprintf(keyName, sizeof(keyName), "%s/%s-key.pem", cwd, deviceId);
 
     char *x509certificate = readFile(certName);
     char *x509privatekey = readFile(keyName);
@@ -170,11 +170,11 @@ int main(int argc, char* argv[])
     char device_id[257];
     char *device_id_src = get_device_id(argv[1]);
  
-    if (device_id_src == NULL)  
-    {  
+    if (device_id_src == NULL)
+    {
         printf("[Device] ERROR: Cannot parse device id from IoT device connection string\n");
         return 1;
-    } 
+    }
 
     snprintf(device_id, sizeof(device_id), "%s", device_id_src);
     free(device_id_src);
