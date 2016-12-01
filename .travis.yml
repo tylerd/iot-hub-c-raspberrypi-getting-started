@@ -1,0 +1,14 @@
+language: cpp
+compiler: gcc
+
+install:
+  - sudo pip install cpplint
+
+script: 
+  - cpplint --filter=-whitespace/braces,-build/include_subdir,-whitespace/newline,-whitespace/line_length ./Lesson1/app/main.c ./Lesson3/app/main.c ./Lesson4/app/main.c  
+
+after_success:
+  - echo "Success"
+  
+after_failure:
+  - cat oclint.log
