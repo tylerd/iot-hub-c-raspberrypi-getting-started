@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 
@@ -133,8 +134,8 @@ static bool setX509Certificate(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char 
     char cwd[1024];
 
     getcwd(cwd, sizeof(cwd));
-    snprintf(sizeof(certName), "%s/%s-cert.pem", cwd, deviceId);
-    snprintf(sizeof(keyName), "%s/%s-key.pem", cwd, deviceId);
+    snprintf(certName, sizeof(certName), "%s/%s-cert.pem", cwd, deviceId);
+    snprintf(keyName, sizeof(keyName), "%s/%s-key.pem", cwd, deviceId);
 
     char *x509certificate = readFile(certName);
     char *x509privatekey = readFile(keyName);
