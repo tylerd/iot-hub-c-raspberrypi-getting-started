@@ -9,6 +9,5 @@ script:
   - gulp lint
   - gulp cpplint
 
-
 matrix:
   fast_finish: true
