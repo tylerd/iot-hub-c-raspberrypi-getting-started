@@ -15,8 +15,8 @@ link_directories(${azure_IoT_Sdks}/c/cmake/iotsdk_linux/serializer
                  ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/c-utility
                  ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/umqtt)
 
-add_executable(Lesson4 main.c)
-target_link_libraries(Lesson4 wiringPi
+add_executable(lesson4 main.c)
+target_link_libraries(lesson4 wiringPi
                           serializer
                           iothub_client
                           iothub_client_mqtt_transport
