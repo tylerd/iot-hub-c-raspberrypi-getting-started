@@ -6,11 +6,21 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set (CMAKE_C_FLAGS "--std=c99 -g ${CMAKE_C_FLAGS}")
 endif()
 
-include_directories("/usr/include/azureiot"
-                    "/usr/include/azureiot/inc/")
+if(${azure_IoT_Sdks})
+  include_directories(${azure_IoT_Sdks}/c/c-utility/inc
+                      ${azure_IoT_Sdks}/c/iothub_client/inc
+                      ${azure_IoT_Sdks}/c/serializer/inc)
+  link_directories(${azure_IoT_Sdks}/c/cmake/iotsdk_linux/serializer
+                   ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/iothub_client
+                   ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/c-utility
+                   ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/umqtt)
+else()
+  include_directories("/usr/include/azureiot"
+                      "/usr/include/azureiot/inc/")
+endif()
 
-add_executable(app main.c)
-target_link_libraries(app wiringPi
+add_executable(lesson4 main.c)
+target_link_libraries(lesson4 wiringPi
                           serializer
                           iothub_client
                           iothub_client_mqtt_transport
