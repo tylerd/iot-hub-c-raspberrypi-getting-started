@@ -13,7 +13,7 @@ const int RED_LED_PIN = 7;
 int main(int argc, char *argv[])
 {
     int blinkNumber = 0;
-    
+
     wiringPiSetup();
     pinMode(RED_LED_PIN, OUTPUT);
 

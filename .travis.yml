@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "6"
+  
+before_script:
+  - npm install
+  
+script:
+  - gulp lint
+  - gulp cpplint
+
+matrix:
+  fast_finish: true
