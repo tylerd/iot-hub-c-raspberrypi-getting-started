@@ -7,7 +7,9 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set (CMAKE_C_FLAGS "--std=c99 -g ${CMAKE_C_FLAGS}")
 endif()
 
-if(${azure_IoT_Sdks})
+option(azure_IoT_Sdks "passes path of azure iot sdks build libs source path" OFF)
+
+if(NOT "${azure_IoT_Sdks}" STREQUAL "OFF")
   include_directories(${azure_IoT_Sdks}/c/c-utility/inc
                       ${azure_IoT_Sdks}/c/iothub_client/inc)
   link_directories(${azure_IoT_Sdks}/c/cmake/iotsdk_linux/serializer

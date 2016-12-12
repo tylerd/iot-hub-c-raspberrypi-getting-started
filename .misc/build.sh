@@ -40,7 +40,7 @@ process_args ()
       then
         # save arg to pass as toolchain file
         toolchainfile="$arg"
-		    save_next_arg=0
+        save_next_arg=0
       elif [ $save_next_arg == 3 ]
       then
         #save azureiotsdsk lib path
