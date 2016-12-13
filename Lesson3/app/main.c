@@ -42,7 +42,7 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
 static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *device_id)
 {
     char buffer[256];
-    snprintf(buffer, sizeof(buffer), "{\"deviceId\":\"%s\",\"messageId\":%d}", device_id, g_total_blink_times);
+    snprintf(buffer, sizeof(buffer), "{\"deviceId\":\"%s\",\"messageId\":%d}", device_id, totalBlinkTimes);
 
     IOTHUB_MESSAGE_HANDLE messageHandle = IoTHubMessage_CreateFromByteArray(buffer, strlen(buffer));
     if (messageHandle == NULL)
