@@ -39,7 +39,7 @@ static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userCon
     messagePending = false;
 }
 
-static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle)
+static void sendMessageAndBlink(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char *device_id)
 {
     char buffer[256];
     snprintf(buffer, sizeof(buffer), "{\"deviceId\":\"%s\",\"messageId\":%d}", device_id, g_total_blink_times);
@@ -207,7 +207,7 @@ int main(int argc, char* argv[])
             {
                 if ((lastMessageSentTime + 2000 < millis()) && !messagePending)
                 {
-                    sendMessageAndBlink(iotHubClientHandle);
+                    sendMessageAndBlink(iotHubClientHandle, device_id);
                     totalBlinkTimes++;
                 }
 
