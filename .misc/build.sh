@@ -8,7 +8,7 @@ script_dir=$(cd "$(dirname "$0")" && pwd)
 build_root=$(cd "${script_dir}/.." && pwd)
 log_dir=$build_root
 toolchainfile=" "
-azureiotsdks=" "
+azureiotsdkc=" "
 build_folder=$build_root"/cmake/linux"
 make=true
 
@@ -20,7 +20,7 @@ usage ()
     echo " -cl, --compileoption <value>  specify a compile option to be passed to gcc"
     echo "   Example: -cl -O1 -cl ..."
     echo " --toolchain-file <file>       pass cmake a toolchain file for cross compiling"
-    echo " --azure-iot-sdks <directory>  azure iot sdks lib root directory"    
+    echo " --azure-iot-sdk-c <directory>  azure iot sdk c lib root directory"    
     exit 1
 }
 
@@ -44,13 +44,13 @@ process_args ()
       elif [ $save_next_arg == 3 ]
       then
         #save azureiotsdsk lib path
-        azureiotsdks="$arg"
+        azureiotsdkc="$arg"
         save_next_arg=0
       else
           case "$arg" in              
               "-cl" | "--compileoption" ) save_next_arg=1;;
               "--toolchain-file" ) save_next_arg=2;;
-              "--azure-iot-sdks" ) save_next_arg=3;;
+              "--azure-iot-sdk-c" ) save_next_arg=3;;
               * ) usage;;
           esac
       fi
@@ -62,10 +62,10 @@ process_args ()
       toolchainfile="-DCMAKE_TOOLCHAIN_FILE=$toolchainfile"
     fi
 
-    if [ "$azureiotsdks" != " " ]
+    if [ "$azureiotsdkc" != " " ]
     then
-      azureiotsdks=$(readlink -f $azureiotsdks)
-      azureiotsdks="-Dazure_IoT_Sdks=$azureiotsdks"
+      azureiotsdkc=$(readlink -f $azureiotsdkc)
+      azureiotsdkc="-Dazure_IoT_Sdk_c=$azureiotsdkc"
     fi
 }
 
@@ -74,7 +74,7 @@ process_args $*
 rm -r -f $build_folder
 mkdir -p $build_folder
 pushd $build_folder
-cmake $toolchainfile $azureiotsdks -DcompileOption_C:STRING="$extracloptions" $build_root
+cmake $toolchainfile $azureiotsdkc -DcompileOption_C:STRING="$extracloptions" $build_root
 
 if [ "$make" = true ]
 then

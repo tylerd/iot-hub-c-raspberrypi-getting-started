@@ -7,15 +7,15 @@ if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
   set (CMAKE_C_FLAGS "--std=c99 -g ${CMAKE_C_FLAGS}")
 endif()
 
-option(azure_IoT_Sdks "passes path of azure iot sdks build libs source path" OFF)
+option(azure_IoT_Sdk_c "passes path of azure iot sdk c build libs source path" OFF)
 
-if(NOT "${azure_IoT_Sdks}" STREQUAL "OFF")
-  include_directories(${azure_IoT_Sdks}/c/c-utility/inc
-                      ${azure_IoT_Sdks}/c/iothub_client/inc)
-  link_directories(${azure_IoT_Sdks}/c/cmake/iotsdk_linux/serializer
-                   ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/iothub_client
-                   ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/c-utility
-                   ${azure_IoT_Sdks}/c/cmake/iotsdk_linux/umqtt)
+if(NOT "${azure_IoT_Sdk_c}" STREQUAL "OFF")
+  include_directories(${azure_IoT_Sdk_c}/c-utility/inc
+                      ${azure_IoT_Sdk_c}/iothub_client/inc)
+  link_directories(${azure_IoT_Sdk_c}/cmake/iotsdk_linux/serializer
+                   ${azure_IoT_Sdk_c}/cmake/iotsdk_linux/iothub_client
+                   ${azure_IoT_Sdk_c}/cmake/iotsdk_linux/c-utility
+                   ${azure_IoT_Sdk_c}/cmake/iotsdk_linux/umqtt)
 else()
   include_directories("/usr/include/azureiot"
                       "/usr/include/azureiot/inc/")
