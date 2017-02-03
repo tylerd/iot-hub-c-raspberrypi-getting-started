@@ -66,9 +66,16 @@ char *createMessage(int messageId)
 
 char *readMessage(int messageId)
 {
-    Sensor_Data * data = read_sensor_data();
+    Sensor_Data * data = read_sensor_data_with_retry();
     char *message = calloc(1, BUFFER_SIZE);
-    snprintf(message, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, data->temperature, data->humidity);
+    if(data == NULL)
+    {
+        snprintf(message, BUFFER_SIZE, "{{ messageId: %d, error: \"read data failed\" }", messageId);
+    }
+    else
+    {
+        snprintf(message, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, data->temperature, data->humidity);
+    }    
     printf("%s\r\n", message);
     return message;
 }

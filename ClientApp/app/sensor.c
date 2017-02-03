@@ -1,14 +1,10 @@
 #include "sensor.h"
 
 #include <malloc.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdbool.h>
 #include <wiringPi.h>
-
-const int PIN = 7;
-const int TIMEOUT = 255;
 
 bool has_setup = false;
 void setup(){
@@ -17,14 +13,24 @@ void setup(){
     has_setup = true;
 }
 
+Sensor_Data * read_sensor_data_with_retry()
+{
+    Sensor_Data *data = NULL;
+    for(int i = 0; i < RETRY_COUNT; i++)
+    {
+        data = read_sensor_data();
+        if(data != NULL)
+        {
+            break;
+        }
+    }
+    return data;
+}
+
+
 Sensor_Data *read_sensor_data()
 {
     setup();
-    Sensor_Data *sensor = (Sensor_Data *)malloc(sizeof(Sensor_Data));
-
-    sensor->temperature = 0.0;
-    sensor->humidity = 0.0;
-
     int data[5];
     data[0] = data[1] = data[2] = data[3] = data[4] = 0;
 
@@ -43,8 +49,7 @@ Sensor_Data *read_sensor_data()
 
     if(pulse(LOW) == 0 || pulse(HIGH) == 0) 
     {
-        printf("read failed\r\n");
-        return sensor;
+        return NULL;
     }
 
     int cycles[80];
@@ -59,8 +64,7 @@ Sensor_Data *read_sensor_data()
         int high = cycles[2 * i + 1];
 
         if(low == 0 || high == 0) {
-            printf("read terminate\r\n");
-            return sensor;
+            return NULL;
         }
         data[i/8] <<= 1;
         if(high > low) {
@@ -69,7 +73,13 @@ Sensor_Data *read_sensor_data()
     }
 
     if (data[4] != ((data[0] + data[1] + data[2] + data[3]) & 0xFF)) {
-        return sensor;
+        return NULL;
+    }
+
+    Sensor_Data *sensor = (Sensor_Data *)malloc(sizeof(Sensor_Data));
+    if(sensor == NULL)
+    {
+        return NULL;
     }
 
     sensor -> temperature = ((data[2] & 0x7F) * 256 + data[3]) * 0.1;

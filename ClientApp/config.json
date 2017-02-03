@@ -1,5 +1,5 @@
 {
-  "project_folder": "./c-pi-lesson-1",
+  "project_folder": "./c-pi-lesson-client-app",
   "start_file": "app",
   "args": [5000, false],
   "ssh_port": 22
