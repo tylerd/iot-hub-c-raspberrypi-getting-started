@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <wiringPi.h>
+#include <wiringPiSPI.h>
 
 #include "azure_c_shared_utility/platform.h"
 #include "azure_c_shared_utility/threadapi.h"
@@ -16,8 +18,11 @@
 #include "iothubtransportmqtt.h"
 #include "sensor.h"
 
-const int DEFAULT_PERIOD = 2000;
-const int BUFFER_SIZE = 256;
+#define SPI_CHANNEL 0
+#define SPI_CLOCK 1000000L
+
+#define DEFAULT_PERIOD 2000
+#define BUFFER_SIZE 256
 bool messagePending = false;
 
 static void sendCallback(IOTHUB_CLIENT_CONFIRMATION_RESULT result, void* userContextCallback)
@@ -51,33 +56,64 @@ static void sendMessages(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char * buff
 
         IoTHubMessage_Destroy(messageHandle);
     }
-    free(buffer);    
 }
 
-char *createMessage(int messageId) 
+int createMessage(int messageId, char * buffer) 
 {
-    char *message = calloc(1, BUFFER_SIZE);
-    char *str = "{messageId: 1}";
-    memcpy(message, str, strlen(str));
-    message[strlen(str)] = '\0';
-    printf("%s\r\n", message);
-    return message;
+    snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, 10.0f, 20.0f);
+    printf("%s\r\n", buffer);
 }
 
-char *readMessage(int messageId)
+static unsigned int BMEInitMark = 0;
+#define BME_INIT 4
+#define SPI_SETUP 2
+#define WIRINGPI_SETUP 1
+int readMessage(int messageId, char * buffer)
 {
-    Sensor_Data * data = read_sensor_data_with_retry();
-    char *message = calloc(1, BUFFER_SIZE);
-    if(data == NULL)
+    // setup has not finished and try to init the BME280
+    if (BMEInitMark != 7 && init_bme() != 1)
     {
-        snprintf(message, BUFFER_SIZE, "{{ messageId: %d, error: \"read data failed\" }", messageId);
+        // setup failed
+        return 0;
+    }
+
+    float temperature, humidity, pressure;
+    if (bme280_read_sensors(&temperature, &pressure, &humidity) != 1)
+    {
+        snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, error: \"read data failed\" }", messageId);
+        return 0;
     }
     else
     {
-        snprintf(message, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, data->temperature, data->humidity);
+        snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, temperature, humidity);
     }    
-    printf("%s\r\n", message);
-    return message;
+    printf("%s\r\n", buffer);
+    return 1;
+}
+
+int mask_check(int check, int mask)
+{
+    return (check & mask) ^ mask;
+}
+
+int init_bme()
+{
+    if (mask_check(BMEInitMark, WIRINGPI_SETUP) != 0 && wiringPiSetup() != 0)
+    {
+        return 0;
+    }
+    BMEInitMark |= WIRINGPI_SETUP;
+    if (mask_check(BMEInitMark, SPI_SETUP) != 0 && wiringPiSPISetup(SPI_CHANNEL, SPI_CLOCK) < 0)
+    {
+        return 0;
+    }
+    BMEInitMark |= SPI_SETUP;
+    if (mask_check(BMEInitMark, BME_INIT) != 0 && bme280_init(SPI_CHANNEL) != 1)
+    {
+        return 0;
+    }
+    BMEInitMark |= BME_INIT;
+    return 1;
 }
 
 char *get_device_id(char *str)
@@ -182,14 +218,18 @@ int main(int argc, char* argv[])
     // get period and get simulate data value
     int period = DEFAULT_PERIOD;
     bool simulateData = false;
-    if(argc > 2) {
+    if (argc > 2)
+    {
        period = atoi(argv[2]);
     }
 
-    if(argc > 3 && !strcmp(argv[3], "true")) {
+    if (argc > 3 && !strcmp(argv[3], "true"))
+    {
         printf("Use simulate data\r\n");
         simulateData = true;
-    }else{
+    }
+    else
+    {
         printf("Use real device\r\n");
     }
 
@@ -233,10 +273,17 @@ int main(int argc, char* argv[])
                 if (!messagePending)
                 {
                     ++count;
-                    char * buffer = simulateData ? createMessage(count) : readMessage(count);
-                    sendMessages(iotHubClientHandle, buffer);
+                    char * buffer = (char *)malloc(BUFFER_SIZE);
+                    if (buffer != NULL)
+                    {
+                        int readMessageResult = simulateData ? createMessage(count, buffer) : readMessage(count, buffer);
+                        if (readMessageResult == 1)
+                        {
+                            sendMessages(iotHubClientHandle, buffer);
+                        }
+                        free(buffer);
+                    }
                 }
-
                 IoTHubClient_LL_DoWork(iotHubClientHandle);
                 delay(period);
             }
