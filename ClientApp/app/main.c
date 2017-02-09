@@ -58,7 +58,7 @@ static void sendMessages(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char * buff
     }
 }
 
-int createMessage(int messageId, char * buffer) 
+int createMessage(int messageId, char * buffer)
 {
     snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, 10.0f, 20.0f);
     printf("%s\r\n", buffer);
@@ -86,8 +86,7 @@ int readMessage(int messageId, char * buffer)
     else
     {
         snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, temperature, humidity);
-    }    
-    printf("%s\r\n", buffer);
+    }
     return 1;
 }
 
