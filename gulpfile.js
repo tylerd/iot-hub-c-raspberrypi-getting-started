@@ -24,7 +24,8 @@ gulp.task('cpplint', () => {
     files: [
       './Lesson1/app/main.c',
       './Lesson3/app/main.c',
-      './Lesson4/app/main.c'
+      './Lesson4/app/main.c',
+      './ClientApp/app/main.c'
     ],
     filters: {
       'whitespace': {

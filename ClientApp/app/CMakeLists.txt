@@ -10,7 +10,7 @@ endif()
 include_directories("/usr/include/azureiot"
                     "/usr/include/azureiot/inc/")
 
-set(SOURCE main.c sensor.c sensor.h)
+set(SOURCE main.c bme280.c bme280.h)
 add_executable(app ${SOURCE})
 target_link_libraries(app wiringPi
                           serializer

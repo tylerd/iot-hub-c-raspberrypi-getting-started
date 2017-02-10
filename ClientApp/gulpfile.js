@@ -15,5 +15,5 @@ require('gulp-common')(require('gulp'), 'raspberrypi-c-on-device', {
     "iot_device_connection_string": "[IoT device connection string]"
   },
   configPostfix: "raspberrypi",
-  app: [ 'main.c', 'sensor.h', 'sensor.c', 'CMakeLists.txt' ]
+  app: [ 'main.c', 'bme280.h', 'bme280.c', 'CMakeLists.txt' ]
 });

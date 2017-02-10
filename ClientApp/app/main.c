@@ -16,12 +16,12 @@
 #include "iothub_client_options.h"
 #include "iothub_message.h"
 #include "iothubtransportmqtt.h"
-#include "sensor.h"
+#include "bme280.h"
 
 #define SPI_CHANNEL 0
 #define SPI_CLOCK 1000000L
 
-#define DEFAULT_PERIOD 2000
+#define DEFAULT_INTERVAL 2000
 #define BUFFER_SIZE 256
 bool messagePending = false;
 
@@ -60,8 +60,10 @@ static void sendMessages(IOTHUB_CLIENT_LL_HANDLE iotHubClientHandle, char * buff
 
 int createMessage(int messageId, char * buffer)
 {
-    snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, 10.0f, 20.0f);
-    printf("%s\r\n", buffer);
+    float temperature = 20.0f + messageId % 10;
+    float humidity = 35.0f + messageId % 10;
+    snprintf(buffer, BUFFER_SIZE, "{ messageId: %d, temperature: %f, humidity: %f }", messageId, temperature, humidity);
+    return 1;
 }
 
 static unsigned int BMEInitMark = 0;
@@ -214,22 +216,23 @@ int main(int argc, char* argv[])
 
     char device_id[257];
     char *device_id_src = get_device_id(argv[1]);
-    // get period and get simulate data value
-    int period = DEFAULT_PERIOD;
-    bool simulateData = false;
+    // get interval configure from argv, it means the delay in each loop
+    int interval = DEFAULT_INTERVAL;
     if (argc > 2)
     {
-       period = atoi(argv[2]);
+       interval = atoi(argv[2]);
     }
 
+    // get simulated data value, if the value is true, means the temperature and humidity data are simulated
+    bool simulatedData = false;
     if (argc > 3 && !strcmp(argv[3], "true"))
     {
-        printf("Use simulate data\r\n");
-        simulateData = true;
+        printf("Use simulated data\r\n");
+        simulatedData = true;
     }
     else
     {
-        printf("Use real device\r\n");
+        printf("Use a physical device\r\n");
     }
 
     if (device_id_src == NULL)
@@ -272,19 +275,19 @@ int main(int argc, char* argv[])
                 if (!messagePending)
                 {
                     ++count;
-                    char * buffer = (char *)malloc(BUFFER_SIZE);
+                    char * buffer = calloc(sizeof(char), BUFFER_SIZE);
                     if (buffer != NULL)
                     {
-                        int readMessageResult = simulateData ? createMessage(count, buffer) : readMessage(count, buffer);
+                        int readMessageResult = simulatedData ? createMessage(count, buffer) : readMessage(count, buffer);
                         if (readMessageResult == 1)
                         {
                             sendMessages(iotHubClientHandle, buffer);
                         }
                         free(buffer);
                     }
+                    delay(interval);
                 }
                 IoTHubClient_LL_DoWork(iotHubClientHandle);
-                delay(period);
             }
 
             IoTHubClient_LL_Destroy(iotHubClientHandle);

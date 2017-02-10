@@ -6,7 +6,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "sensor.h"
+#include "bme280.h"
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
 #include <stdint.h>
