@@ -1,0 +1,6 @@
+{
+  "device": "raspberrypi",
+  "deviceip": "[device ip address]",
+  "username": "pi",
+  "password": "raspberry"
+}
